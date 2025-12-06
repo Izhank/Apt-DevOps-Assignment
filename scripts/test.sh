@@ -52,10 +52,10 @@ run_test() {
     CONTENT=$(curl -s "$URL")
 
     if [ "$RESPONSE" == "200" ] && [[ "$CONTENT" == *"$EXPECTED_CONTENT"* ]]; then
-        echo "✅ PASS (Status: ${RESPONSE})"
+        echo "PASS (Status: ${RESPONSE})"
         SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
     else
-        echo "❌ FAIL (Status: ${RESPONSE}, Expected Content: '${EXPECTED_CONTENT}' in '${CONTENT}')"
+        echo "FAIL (Status: ${RESPONSE}, Expected Content: '${EXPECTED_CONTENT}' in '${CONTENT}')"
     fi
 }
 
@@ -67,7 +67,7 @@ run_test "/" "Welcome to the Apt DevOps API!" "Root Endpoint"
 
 echo "--- Test Summary ---"
 if [ "$SUCCESS_COUNT" -eq "$TOTAL_TESTS" ]; then
-    echo "🚀 All ${TOTAL_TESTS} tests passed successfully!"
+    echo " All ${TOTAL_TESTS} tests passed successfully!"
 else
-    echo "💔 ${SUCCESS_COUNT} of ${TOTAL_TESTS} tests passed. Check logs and infrastructure."
+    echo " ${SUCCESS_COUNT} of ${TOTAL_TESTS} tests passed. Check logs and infrastructure."
 fi
