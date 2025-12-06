@@ -7,7 +7,7 @@ set -e
 echo "Updating system and installing dependencies..."
 # Update package list and install Node.js, systemd tools
 yum update -y
-# Install Node.js v18 (LTS)
+# Install Node.js v18
 curl -fsSL https://rpm.nodesource.com/setup_18.x | bash -
 yum install -y nodejs
 yum install -y systemd
@@ -18,13 +18,13 @@ APP_DIR="/opt/app"
 mkdir -p $APP_DIR
 cd $APP_DIR
 
-# The actual content of the Node.js server.js [cite: 29, 30, 45]
+# The actual content of the Node.js server.js
 cat << 'EOF' > server.js
 const http = require('http');
 const port = 8080; // App must run on port 8080 
 
 const server = http.createServer((req, res) => {
-  // Log request to stdout/CloudWatch [cite: 31]
+  // Log request to stdout/CloudWatch 
   console.log(`[${new Date().toISOString()}] Request received: ${req.method} ${req.url}`);
 
   if (req.url === '/health') {
@@ -33,7 +33,7 @@ const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'text/plain');
     res.end('ok');
   } else if (req.url === '/') {
-    // Root endpoint returns simple text [cite: 45]
+    // Root endpoint returns simple text 
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
     res.end('Welcome to the Apt DevOps API! Instance ID: ' + process.env.HOSTNAME);
