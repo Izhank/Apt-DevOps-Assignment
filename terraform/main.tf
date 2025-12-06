@@ -33,5 +33,5 @@ module "asg" {
   min_size             = var.min_size
   max_size             = var.max_size
   instance_profile_arn = aws_iam_instance_profile.ec2_instance_profile.arn
-  # key_pair_name = "your-key-name" # Uncomment and replace if needed for restricted SSH 
+
 }
