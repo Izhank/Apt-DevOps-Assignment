@@ -59,7 +59,7 @@ echo "2. Planning Infrastructure..."
 terraform plan -var-file="$TF_VARS_FILE" -var="aws_region=${AWS_REGION}" -out="tfplan"
 
 echo "3. Applying Infrastructure (This may take a few minutes)..."
-# Use auto-approve for true 'one-click' experience [cite: 27]
+# Use auto-approve for true 'one-click' experience 
 terraform apply -auto-approve "tfplan"
 
 # 4. Cleanup plan file
