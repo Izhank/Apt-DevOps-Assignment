@@ -59,10 +59,10 @@ run_test() {
     fi
 }
 
-# Test 1: /health endpoint [cite: 30, 39]
+# Test 1: /health endpoint 
 run_test "/health" "ok" "Health Check"
 
-# Test 2: / root endpoint [cite: 45]
+# Test 2: / root endpoint 
 run_test "/" "Welcome to the Apt DevOps API!" "Root Endpoint"
 
 echo "--- Test Summary ---"
