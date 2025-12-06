@@ -1,4 +1,4 @@
-# ALB Security Group [cite: 18, 19]
+# ALB Security Group 
 resource "aws_security_group" "alb_sg" {
   name        = "${var.project_name}-alb-sg"
   description = "Allow HTTP/HTTPS from internet to ALB"
@@ -32,7 +32,7 @@ resource "aws_security_group" "alb_sg" {
   }
 }
 
-# EC2 Security Group [cite: 18, 20]
+# EC2 Security Group
 resource "aws_security_group" "ec2_sg" {
   name        = "${var.project_name}-ec2-sg"
   description = "Allow traffic only from ALB SG"
@@ -60,7 +60,7 @@ resource "aws_security_group" "ec2_sg" {
   }
 }
 
-# IAM Role for EC2 [cite: 21, 23]
+# IAM Role for EC2
 resource "aws_iam_role" "ec2_instance_role" {
   name               = "${var.project_name}-ec2-role"
   assume_role_policy = <<EOF
@@ -79,18 +79,19 @@ resource "aws_iam_role" "ec2_instance_role" {
 EOF
 }
 
-# Policy for SSM and CloudWatch Logs [cite: 22, 23]
+# Policy for SSM and CloudWatch Logs 
 resource "aws_iam_role_policy_attachment" "ssm_managed_policy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore" # Recommended [cite: 23]
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore" 
   role       = aws_iam_role.ec2_instance_role.name
 }
 
 resource "aws_iam_role_policy_attachment" "cloudwatch_managed_policy" {
-  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy" # For CloudWatch Logs [cite: 22]
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy" 
   role       = aws_iam_role.ec2_instance_role.name
 }
 
 resource "aws_iam_instance_profile" "ec2_instance_profile" {
   name = "${var.project_name}-instance-profile"
   role = aws_iam_role.ec2_instance_role.name
+
 }
