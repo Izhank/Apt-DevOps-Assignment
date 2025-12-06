@@ -1,4 +1,4 @@
-# VPC 
+# VPC
 resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr_block
   enable_dns_support   = true
@@ -9,7 +9,7 @@ resource "aws_vpc" "main" {
   }
 }
 
-# Internet Gateway 
+# Internet Gateway
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
@@ -23,13 +23,13 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
-# Public Subnets (for ALB and NAT Gateway) [cite: 11, 13]
+# Public Subnets (for ALB and NAT Gateway)
 resource "aws_subnet" "public" {
   count                   = 2
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = cidrsubnet(var.vpc_cidr_block, 8, count.index) # 10.0.0.0/24, 10.0.1.0/24
+  cidr_block              = cidrsubnet(var.vpc_cidr_block, 8, count.index)
   availability_zone       = data.aws_availability_zones.available.names[count.index]
-  map_public_ip_on_launch = true # Instances in public subnets need public IP
+  map_public_ip_on_launch = true
 
   tags = {
     Name    = "${var.project_name}-PublicSubnet-${count.index + 1}"
@@ -37,13 +37,13 @@ resource "aws_subnet" "public" {
   }
 }
 
-# Private Subnets (for EC2/ASG) [cite: 11, 17, 32]
+# Private Subnets (for EC2/ASG)
 resource "aws_subnet" "private" {
   count                   = 2
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = cidrsubnet(var.vpc_cidr_block, 8, count.index + 2) # 10.0.2.0/24, 10.0.3.0/24
+  cidr_block              = cidrsubnet(var.vpc_cidr_block, 8, count.index + 2)
   availability_zone       = data.aws_availability_zones.available.names[count.index]
-  map_public_ip_on_launch = false # No public IPs for EC2 
+  map_public_ip_on_launch = false
 
   tags = {
     Name    = "${var.project_name}-PrivateSubnet-${count.index + 1}"
@@ -53,8 +53,8 @@ resource "aws_subnet" "private" {
 
 # EIP for NAT Gateway
 resource "aws_eip" "nat" {
-  count      = 1 # One NAT Gateway for simplicity
-  vpc        = true
+  count      = 1
+  domain     = "vpc"    # <--- FIXED: Changed from 'vpc = true'
   depends_on = [aws_internet_gateway.igw]
 
   tags = {
@@ -62,11 +62,11 @@ resource "aws_eip" "nat" {
   }
 }
 
-# NAT Gateway (in one public subnet) [cite: 13]
+# NAT Gateway (in one public subnet)
 resource "aws_nat_gateway" "nat_gw" {
   count         = 1
   allocation_id = aws_eip.nat[count.index].id
-  subnet_id     = aws_subnet.public[0].id # Place NAT in the first public subnet
+  subnet_id     = aws_subnet.public[0].id
   depends_on    = [aws_internet_gateway.igw]
 
   tags = {
@@ -96,7 +96,7 @@ resource "aws_route_table" "private" {
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat_gw[0].id # Route all egress traffic through NAT GW 
+    nat_gateway_id = aws_nat_gateway.nat_gw[0].id
   }
 
   tags = {

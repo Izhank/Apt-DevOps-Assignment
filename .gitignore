@@ -1,0 +1,16 @@
+# Ignore Terraform binary plugins (The huge files)
+.terraform/
+.terraform.lock.hcl
+
+# Ignore State files (Sensitive data)
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+
+# Ignore ZIP files
+*.zip
+
+# Ignore Keys
+*.pem
+terra-key-ec2.txt
