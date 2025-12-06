@@ -76,7 +76,4 @@ systemctl daemon-reload
 systemctl enable apt-api.service
 systemctl start apt-api.service
 
-# --- 4. Install CloudWatch Agent (Optional but good practice) ---
-# Note: Amazon Linux 2023 comes pre-installed with the SSM Agent which includes CloudWatch agent capabilities.
-# The IAM policy (CloudWatchAgentServerPolicy) is sufficient to allow logging to CloudWatch Logs. [cite: 22]
 echo "Configuration complete."
