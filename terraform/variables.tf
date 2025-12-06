@@ -17,9 +17,9 @@ variable "vpc_cidr_block" {
 }
 
 variable "ami_id" {
-  description = "AMI ID for the EC2 instances (Amazon Linux 2023 recommended)"
+  description = "AMI ID for the EC2 instances "
   type        = string
-  default     = "ami-0fa3fe0fa7920f68e" # Example: Amazon Linux 2023 in us-east-1
+  default     = "ami-0fa3fe0fa7920f68e" 
 }
 
 variable "instance_type" {
@@ -38,4 +38,5 @@ variable "max_size" {
   description = "Maximum number of instances in the Auto Scaling Group"
   type        = number
   default     = 4
+
 }
